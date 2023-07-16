@@ -1,4 +1,4 @@
-const Drawer = ({ onClose, items = [] }) => {
+const Drawer = ({ onClose, onRemove, items = [] }) => {
   return (
     <div className="overlay">
       <div className="drawer">
@@ -12,55 +12,50 @@ const Drawer = ({ onClose, items = [] }) => {
           />
         </h2>
 
-        <div className="items">
-          {items.map((obj) => (
-            <div className="cartItem d-flex align-center mb-20">
-              <div
-                style={{ backgroundImage: "url({obj.url})" }}
-                className="cartItemImg"
-              ></div>
-              <div className="mr-20 flex">
-                <p className="mb-5">{obj.title}</p>
-                <b>{obj.price} $</b>
-              </div>
-              <img
-                className="removeBtn"
-                src="/img/btn-remove.svg"
-                alt="Remove"
-              />
+        {items.length > 0 ? (
+          <div>
+            <div className="items">
+              {items.map((obj) => (
+                <div className="cartItem d-flex align-center mb-20">
+                  <div
+                    style={{ backgroundImage: `url(${obj.url})` }}
+                    className="cartItemImg"
+                  ></div>
+                  <div className="mr-20 flex">
+                    <p className="mb-5">{obj.title}</p>
+                    <b>{obj.price} $</b>
+                  </div>
+                  <img
+                    onClick={() => onRemove(obj.id)}
+                    className="removeBtn"
+                    src="/img/btn-remove.svg"
+                    alt="Remove"
+                  />
+                </div>
+              ))}
             </div>
-          ))}
-          {/* <div className="cartItem d-flex align-center mb-20">
-            <div
-              style={{ backgroundImage: "url(/img/sneakers/1.jpg)" }}
-              className="cartItemImg"
-            ></div>
-            <div className="mr-20 flex">
-              <p className="mb-5">Men Sneakers Nike Blazer Mid Suede</p>
-              <b>199 $</b>
+            <div className="cartTotalBlock">
+              <ul>
+                <li className="d-flex">
+                  <span>Total:</span>
+                  <div> </div>
+                  <b>199 $</b>
+                </li>
+                <li className="d-flex">
+                  <span>Tax 5%</span>
+                  <div></div>
+                  <b>10 $</b>
+                </li>
+              </ul>
+              <button className="greenButton">
+                Make an order.
+                <img src="/img/arrow.svg" alt="Arrow" />
+              </button>
             </div>
-            <img className="removeBtn" src="/img/btn-remove.svg" alt="Remove" />
-          </div> */}
-        </div>
-
-        <div className="cartTotalBlock">
-          <ul>
-            <li className="d-flex">
-              <span>Total:</span>
-              <div> </div>
-              <b>199 $</b>
-            </li>
-            <li className="d-flex">
-              <span>Tax 5%</span>
-              <div></div>
-              <b>10 $</b>
-            </li>
-          </ul>
-          <button className="greenButton">
-            Make an order.
-            <img src="/img/arrow.svg" alt="Arrow" />
-          </button>
-        </div>
+          </div>
+        ) : (
+          <div>Cart empty</div>
+        )}
       </div>
     </div>
   );
