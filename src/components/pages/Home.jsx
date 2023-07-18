@@ -35,11 +35,9 @@ const Home = ({items, searchValue,
       .map((item, index) => (
         <Card
           key={index}
-          title={item.title}
-          price={item.price}
-          url={item.url}
           onFavorite={() => console.log("add to marks")}
           onPlus={(obj) => onAddToCart(obj)}
+          {...item}
         />
       ))}
   </div>
