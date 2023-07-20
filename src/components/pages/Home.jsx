@@ -1,6 +1,6 @@
 import Card from "../Card/Card";
 
-const Home = ({items, searchValue,
+const Home = ({items, cartItems, searchValue,
   setSearchValue,
   onChangeSearchInput,
   onAddToCart}) => {
@@ -37,7 +37,9 @@ const Home = ({items, searchValue,
           key={index}
           onFavorite={() => console.log("add to marks")}
           onPlus={(obj) => onAddToCart(obj)}
+          added={cartItems.some(obj => Number(obj.id) === Number(item.id))}
           {...item}
+          loading={false}
         />
       ))}
   </div>

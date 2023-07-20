@@ -15,21 +15,23 @@ function App() {
   const [cartOpened, setCartOpened] = React.useState(false);
 
   React.useEffect(() => {
-    axios
-      .get("https://64b2e6e738e74e386d55b477.mockapi.io/items")
-      .then((res) => {
-        setItems(res.data);
-      });
-    axios
-      .get("https://64b2e6e738e74e386d55b477.mockapi.io/cart")
-      .then((res) => {
-        setCartItems(res.data);
-      });
-    axios
-      .get("https://64b2e6e738e74e386d55b477.mockapi.io/favorites")
-      .then((res) => {
-        setFavorites(res.data);
-      });
+    async function fetchData() {
+      const cartResponse = await axios.get(
+        "https://64b2e6e738e74e386d55b477.mockapi.io/cart"
+      );
+      // const favoritesResponse = await axios.get(
+      //   "https://64b2e6e738e74e386d55b477.mockapi.io/favorites"
+      // );
+      const itemsResponse = await axios.get(
+        "https://64b2e6e738e74e386d55b477.mockapi.io/items"
+      );
+
+      setCartItems(cartResponse.data);
+      // setFavorites(favoritesResponse.data);
+      setItems(itemsResponse.data);
+    }
+
+    fetchData();
   }, []);
 
   const onAddToCart = (obj) => {
@@ -50,7 +52,7 @@ function App() {
 
   const onAddToFavorite = async (obj) => {
     try {
-      if (favorites.find((obj) => obj.id === obj.id)) {
+      if (favorites.find((favObj) => Number(favObj.id) === Number(obj.id))) {
         axios.delete(`/favorites/${obj.id}`);
         setFavorites((prev) => prev.filter((item) => item.id !== obj.id));
       } else {
@@ -86,9 +88,11 @@ function App() {
           element={
             <Home
               items={items}
+              cartItems={cartItems}
               searchValue={searchValue}
               setSearchValue={setSearchValue}
               onChangeSearchInput={onChangeSearchInput}
+              onAddToFavorite={onAddToFavorite}
               onAddToCart={onAddToCart}
             />
           }
