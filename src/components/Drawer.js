@@ -1,4 +1,39 @@
+import React from "react";
+import axios from "axios";
+import Info from "./info";
+import AppContext from "../context";
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const Drawer = ({ onClose, onRemove, items = [] }) => {
+  const { cartItems, setCartItems } = React.useContext(AppContext);
+  const [isOrderCompete, setIsOrderComplete] = React.useState(false);
+  // const [OrderId, setOrderId] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const onClickOrder = async () => {
+    try {
+      setIsLoading(true);
+      // const {data} = await axios.post('/orders', {items: cartItems});
+      // setOrderId(data.id);
+      await axios.put("https://64b2e6e738e74e386d55b477.mockapi.io/cart", []);
+      // setOrderId(data.id);
+      setIsOrderComplete(true);
+      setCartItems([]);
+
+      for (let i = 0; i < cartItems.length; i++) {
+        const item = cartItems[i];
+        await axios.delete(
+          "https://64b2e6e738e74e386d55b477.mockapi.io/cart" + item.id
+        );
+        await delay(1000);
+      }
+    } catch (error) {
+      alert("Can not create order :(");
+    }
+    setIsLoading(false);
+  };
+
   return (
     <div className="overlay">
       <div className="drawer">
@@ -13,7 +48,7 @@ const Drawer = ({ onClose, onRemove, items = [] }) => {
         </h2>
 
         {items.length > 0 ? (
-          <div>
+          <div className="flex d-flex flex-column">
             <div className="items">
               {items.map((obj) => (
                 <div
@@ -50,14 +85,28 @@ const Drawer = ({ onClose, onRemove, items = [] }) => {
                   <b>10 $</b>
                 </li>
               </ul>
-              <button className="greenButton">
+              <button
+                disabled={isLoading}
+                onClick={onClickOrder}
+                className="greenButton"
+              >
                 Make an order.
                 <img src="/img/arrow.svg" alt="Arrow" />
               </button>
             </div>
           </div>
         ) : (
-          <div>Cart empty</div>
+          <Info
+            title={isOrderCompete ? "Order complete" : "Cart empty"}
+            description={
+              isOrderCompete
+                ? "Your order #6"
+                : "Add one pare of sneakers, please!"
+            }
+            image={
+              isOrderCompete ? "/img/complete-order.jpg" : "/img/empty-cart.jpg"
+            }
+          />
         )}
       </div>
     </div>

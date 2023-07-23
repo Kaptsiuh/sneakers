@@ -1,6 +1,7 @@
+import React from "react";
 import Card from "../Card/Card";
 
-const Home = ({items, cartItems, searchValue,
+const Home = ({items, searchValue,
   setSearchValue,
   onChangeSearchInput,
   onAddToCart, isLoading}) => {
@@ -12,7 +13,6 @@ const Home = ({items, cartItems, searchValue,
           key={index}
           onFavorite={() => console.log("add to marks")}
           onPlus={(obj) => onAddToCart(obj)}
-          added={cartItems.some(obj => Number(obj.id) === Number(item.id))}
           {...item}
           loading={isLoading}
         />
