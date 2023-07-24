@@ -7,6 +7,7 @@ import Drawer from "./components/Drawer";
 import Home from "./components/pages/Home";
 import Favorites from "./components/pages/Favorites";
 import AppContext from "./context";
+import Orders from "./components/pages/Orders";
 
 function App() {
   const [items, setItems] = React.useState([]);
@@ -87,6 +88,7 @@ function App() {
         items,
         isItemAdded,
         onAddToFavorite,
+        onAddToCart,
         setCartOpened,
         setCartItems,
       }}
@@ -124,6 +126,14 @@ function App() {
           <Route
             path="/favorites"
             element={<Favorites onAddToFavorite={onAddToFavorite} />}
+            exact
+          ></Route>
+        </Routes>
+
+        <Routes>
+          <Route
+            path="/orders"
+            element={<Orders onAddToFavorite={onAddToFavorite} />}
             exact
           ></Route>
         </Routes>
